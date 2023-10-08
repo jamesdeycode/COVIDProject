@@ -226,7 +226,35 @@ GROUP BY
 ORDER BY
 	4 DESC
 
---Creating View for Future Data Visualization
+--Creating Views for Future Data Visualization
+---View 1: View Total New Cases Globally (Per Country & Per Year)
+ALTER TABLE
+	CovidProject..CovidDeaths
+ADD 
+	Year nvarchar(50)
+
+UPDATE
+	CovidProject..CovidDeaths
+SET
+	Year = PARSENAME(REPLACE(date,'-','.'),3)
+
+CREATE VIEW
+	ViewTotalCasesPerYear
+AS
+SELECT
+	location
+	, year
+	, MAX(total_cases)
+FROM
+	CovidProject..CovidDeaths
+GROUP BY
+	location
+	, year
+ORDER BY
+	location
+	, year
+
+---View 2: Total Number of Vaccinated People Per Day
 CREATE VIEW
 	ViewDailyVaccNumbers
 AS
